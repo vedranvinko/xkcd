@@ -1,6 +1,53 @@
 extern crate clap;
 use clap::{App, Arg};
 
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Deserialize, Serialize)]
+struct Response {
+    month: String,
+    num: i32,
+    link: String,
+    year: String,
+    news: String,
+    safe_title: String,
+    transcript: String,
+    alt: String,
+    img: String,
+    title: String,
+    day: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct Comic {
+    title: String,
+    number: i32,
+    date: String,
+    description: String,
+    image: String,
+}
+
+impl Response {
+    fn title(&self) -> String {
+        self.title.to_string()
+    }
+
+    fn number(&self) -> String {
+        self.num.to_string()
+    }
+
+    fn date(&self) -> String {
+        format!("{}/{}/{}", self.day, self.month, self.year)
+    }
+
+    fn description(&self) -> String {
+        self.alt.to_string()
+    }
+
+    fn image(&self) -> String {
+        self.img.to_string()
+    }
+}
 #[tokio::main]
 async fn main() -> Result<(), reqwest::Error> {
     let opts = App::new("xkcd")
